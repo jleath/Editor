@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Editor extends Application {
@@ -47,6 +49,11 @@ public class Editor extends Application {
             System.out.println("whoops");
         }
         launch(args);
+        try {
+            Files.delete(Paths.get("./farts"));
+        } catch (Exception e) {
+            System.out.println("Unable to delete test file");
+        }
     }
 
     @Override
