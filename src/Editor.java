@@ -44,7 +44,7 @@ public class Editor extends Application {
         /** Test code for loading whatever text I want to load for testing. */
         // TODO comment this out when work is complete.
         try {
-            TextFileManager.saveToDisk("This is a test\nand you can sUCUK IT FARTKNOCKER", "./farts");
+            TextFileManager.saveToDisk("This is a test and you can SUCK IT FARTKNOCKER WHOOOOOOOOOO", "./farts");
         } catch (Exception e) {
             System.out.println("whoops");
         }

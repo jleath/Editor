@@ -17,9 +17,10 @@ public class TextRenderEngine {
     private int groupWidth;
     private int groupHeight;
     private int fontSize;
+    private int lineHeight;
     private String fontName;
     private TextStore textStore;
-    private CoordinatePosition nextPosition;
+    private Point nextPosition;
 
     public TextRenderEngine(int width, int height, int defaultFontSize, String defaultFontName) {
         groupWidth = width;
@@ -27,7 +28,7 @@ public class TextRenderEngine {
         fontSize = defaultFontSize;
         fontName = defaultFontName;
         textStore = new TextStore();
-        nextPosition = new CoordinatePosition(LEFT_MARGIN, TOP_MARGIN);
+        nextPosition = new Point(LEFT_MARGIN, TOP_MARGIN);
     }
 
     public Cursor getCursor(int xPos, int yPos) {
@@ -57,23 +58,97 @@ public class TextRenderEngine {
 
     public Group build(FastLinkedList<String> buffer) {
         textStore = new TextStore();
-        Text heightTest = new Text("T");
-        heightTest.setFont(new Font(fontName, (double) fontSize));
-        int lineHeight = (int) (heightTest.getLayoutBounds().getHeight() + 1);
-        textStore.addNewLine(0);
+        lineHeight = getLineHeight();
         for (int i = 0; i < buffer.size(); ++i) {
-            String textFromBuffer = buffer.get(i).getValue();
-            Text toInsert = new Text(textFromBuffer);
-            toInsert.setTextOrigin(VPos.TOP);
-            int currentX = nextPosition.getX();
-            int currentY = nextPosition.getY();
-            toInsert.setY(currentY);
-            toInsert.setX(currentX);
-            toInsert.setFont(new Font(fontName, (double) fontSize));
-            nextPosition.setX(currentX + (int) Math.round(toInsert.getLayoutBounds().getWidth()));
-            textStore.addToLine(0, new TextInfo(toInsert, buffer.get(i)));
+            String textFromBuffer = buffer.getValueFromNode(i);
+            Text toInsert = buildTextBox(textFromBuffer);
+            int lineNumber = calculateLineNumber(toInsert.getY());
+            textStore.addToLine(lineNumber, new TextInfo(toInsert, buffer.getNodeAt(i)));
         }
         return textStore.getTextGroup();
+    }
+
+    private int calculateLineNumber(double yPos) {
+        return (int) (yPos / lineHeight);
+    }
+
+    private Text buildTextBox(String text) {
+        Text result = new Text(text);
+        result.setTextOrigin(VPos.TOP);
+        result.setFont(new Font(fontName, (double) fontSize));
+        positionTextBox(result);
+        return result;
+    }
+
+    private void positionTextBox(Text t) {
+        if (t.getText().equals("\n")) {
+            setToStartOfNextLine(t);
+            return;
+        }
+        if (textOverflowsWindow(t)) {
+            int newX = LEFT_MARGIN;
+            int newY = nextPosition.getY() + lineHeight;
+            FastLinkedList<TextInfo> poppedFromTextStore = new FastLinkedList<>();
+            while (!textStore.peekAtEnd().equals(" ")) {
+                TextInfo popped = textStore.popFromEnd();
+                if (popped == null) {
+                    while (poppedFromTextStore.size() > 0) {
+                        int lineToAddBack = textStore.numLines() - 1;
+                        textStore.addToLine(lineToAddBack, poppedFromTextStore.delete());
+                    }
+                    t.setX(LEFT_MARGIN);
+                    t.setY(nextPosition.getY() + lineHeight);
+                    nextPosition = new Point(LEFT_MARGIN + getTextWidth(t), nextPosition.getY() + lineHeight);
+                    return;
+                }
+                poppedFromTextStore.insert(popped);
+            }
+            nextPosition = new Point(LEFT_MARGIN, nextPosition.getY() + lineHeight);
+            while (poppedFromTextStore.size() > 0) {
+                FastLinkedList.Node nodeFromTextStore = poppedFromTextStore.delete().getNodeInBuffer();
+                String textFromPopped = (String) nodeFromTextStore.getValue();
+                Text toInsert = buildTextBox(textFromPopped);
+                int lineNumber = calculateLineNumber(toInsert.getY());
+                textStore.addToLine(lineNumber, new TextInfo(toInsert, nodeFromTextStore));
+            }
+            setToNextPosition(t);
+            return;
+        } else {
+            setToNextPosition(t);
+            return;
+        }
+    }
+
+    private boolean textOverflowsWindow(Text t) {
+        return nextPosition.getX() + getTextWidth(t) > groupWidth - RIGHT_MARGIN;
+    }
+
+    private void setToStartOfNextLine(Text t) {
+        int newX = LEFT_MARGIN;
+        int newY = nextPosition.getY() + lineHeight;
+        t.setX(newX);
+        t.setY(newY);
+        nextPosition = new Point(newX + getTextWidth(t), newY);
+    }
+
+    private void setToNextPosition(Text t) {
+        t.setX(nextPosition.getX());
+        t.setY(nextPosition.getY());
+        nextPosition = new Point(nextPosition.getX() + getTextWidth(t), nextPosition.getY());
+    }
+
+    private int getLineHeight() {
+        Text heightTest = new Text("T");
+        heightTest.setFont(new Font(fontName, (double) fontSize));
+        return getTextHeight(heightTest);
+    }
+
+    private int getTextHeight(Text t) {
+        return (int) (t.getLayoutBounds().getHeight() + 1);
+    }
+
+    private int getTextWidth(Text t) {
+        return (int) (t.getLayoutBounds().getWidth() + 1);
     }
 
     public void setgroupWidth(int newWidth) {

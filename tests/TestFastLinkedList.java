@@ -31,7 +31,7 @@ public class TestFastLinkedList {
         tb.insert("0");
         tb.insert("1");
         tb.insert("2");
-        FastLinkedList<String>.Node cursor = tb.get(2);
+        FastLinkedList<String>.Node cursor = tb.getNodeAt(2);
         tb.setInsertionPoint(cursor);
         assertEquals("2", tb.delete());
         assertEquals("1", tb.delete());

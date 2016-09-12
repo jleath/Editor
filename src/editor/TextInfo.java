@@ -21,5 +21,17 @@ public class TextInfo {
     public Text getTextBox() {
         return text;
     }
+
+    public String toString() {
+        return text.getText() + " @ " + text.getX() + ", " + text.getY();
+    }
+
+    public boolean isSpace() {
+        return getText().equals(" ");
+    }
+
+    public String getText() {
+        return text.getText();
+    }
 }
 

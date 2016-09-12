@@ -3,11 +3,11 @@ package editor;
 /**
  * Created by jaleath on 9/9/16.
  */
-public class CoordinatePosition {
+public class Point {
     private int xPos;
     private int yPos;
 
-    public CoordinatePosition(int x, int y) {
+    public Point(int x, int y) {
         xPos = x;
         yPos = y;
     }
@@ -26,5 +26,9 @@ public class CoordinatePosition {
 
     public void setY(int y) {
         yPos = y;
+    }
+
+    public String toString() {
+        return xPos + " " + yPos;
     }
 }

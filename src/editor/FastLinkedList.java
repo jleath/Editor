@@ -40,7 +40,7 @@ public class FastLinkedList<T> {
         return size;
     }
 
-    public Node get(int i) {
+    public Node getNodeAt(int i) {
         if (i >= size()) {
             throw new RuntimeException("Index out of bounds");
         }
@@ -50,6 +50,10 @@ public class FastLinkedList<T> {
             i -= 1;
         }
         return curr;
+    }
+
+    public T getValueFromNode(int i) {
+        return getNodeAt(i).getValue();
     }
 
     /**
