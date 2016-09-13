@@ -28,7 +28,7 @@ public class Editor extends Application {
     /**
      * The default size for the editor's text.
      */
-    private static final int DEFAULT_FONT_SIZE = 32;
+    private static final int DEFAULT_FONT_SIZE = 12;
 
     /**
      * A container to store the text on the screen.
@@ -41,10 +41,10 @@ public class Editor extends Application {
 
     public static void main(String[] args) {
         System.out.println(args[0]);
-        /** Test code for loading whatever text I want to load for testing. */
+        /* Test code for loading whatever text I want to load for testing. */
         // TODO comment this out when work is complete.
         try {
-            TextFileManager.saveToDisk("This is a test and you can SUCK IT FARTKNOCKER WHOOOOOOOOOO", "./farts");
+            TextFileManager.saveToDisk("This is a test and you can SUCK IT FARTKNOCKER WHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\nSOME PEOPLE ARE COOL", "./farts");
         } catch (Exception e) {
             System.out.println("whoops");
         }
