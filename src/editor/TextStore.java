@@ -50,9 +50,7 @@ public class TextStore {
     }
 
 
-    /**
-     * Push the items in toPush into the textStore from back to front.
-     */
+    /** Push the items in toPush into the textStore from back to front. */
     private void pushInReverse(FastLinkedList<TextInfo> toPush) {
         Line lastLine = getLastLine();
         while (!toPush.isEmpty()) {
@@ -116,9 +114,7 @@ public class TextStore {
         return lines.get(lines.size() - 1);
     }
 
-    /**
-     * Returns a group of all the text objects stored in the TextStore.
-     */
+    /** Returns a group of all the text objects stored in the TextStore. */
     public Group getTextGroup() {
         Group result = new Group();
         for (Line line : lines) {
@@ -129,9 +125,7 @@ public class TextStore {
         return result;
     }
 
-    /**
-     * A line is simply a FastLinkedList that stores TextInfo objects.
-     */
+    /** A line is simply a FastLinkedList that stores TextInfo objects. */
     private class Line {
         private FastLinkedList<TextInfo> characters;
 

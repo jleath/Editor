@@ -10,14 +10,10 @@ public class FastLinkedList<T> {
      */
     private Node insertionPoint;
 
-    /**
-     * The number of items in the linkedList.
-     */
+    /** The number of items in the linkedList. */
     private int size;
 
-    /**
-     * The root element of the linked list.
-     */
+    /** The root element of the linked list. */
     private Node sentinel;
 
     public FastLinkedList() {
@@ -48,6 +44,10 @@ public class FastLinkedList<T> {
         return size;
     }
 
+    /**
+     * Return the node at position I in the fastLinkedList. This invalidates the whole point
+     * of a fast linked list, so it should only be used when absolutely necessary.
+     */
     public Node getNodeAt(int i) {
         if (i >= size()) {
             throw new RuntimeException("Index out of bounds");
@@ -88,6 +88,7 @@ public class FastLinkedList<T> {
         return insertionPoint;
     }
 
+    /** Modify the point where a value is to be inserted or deleted. */
     public void setInsertionPoint(Node n) {
         insertionPoint = n;
     }
@@ -105,9 +106,7 @@ public class FastLinkedList<T> {
         return result;
     }
 
-    /**
-     * A node in a FastLinkedList
-     */
+    /** A node in a FastLinkedList */
     public class Node {
         T value;
         Node next;

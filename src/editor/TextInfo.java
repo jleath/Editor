@@ -2,9 +2,7 @@ package editor;
 
 import javafx.scene.text.Text;
 
-/**
- * A TextInfo object stores a Text object and the corresponding node from the editor's main FastLinkedList.
- */
+/** A TextInfo object stores a Text object and the corresponding node from the editor's main FastLinkedList. */
 public class TextInfo {
     private Text text;
     private FastLinkedList.Node nodeInBuffer;

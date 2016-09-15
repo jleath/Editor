@@ -13,39 +13,25 @@ public class TextRenderEngine {
     private static final int RIGHT_MARGIN = 5;
     private static final int TOP_MARGIN = 0;
 
-    /**
-     * The maximum width of the text box built by the engine.
-     */
+    /** The maximum width of the text box built by the engine. */
     private int groupWidth;
 
-    /**
-     * The maximum height of the text box build by the engine.
-     */
+    /** The maximum height of the text box build by the engine. */
     private int groupHeight;
 
-    /**
-     * The font size of the text to be built.
-     */
+    /** The font size of the text to be built. */
     private int fontSize;
 
-    /**
-     * The line height of the text to be built. Will be determined by the engine as it works.
-     */
+    /** The line height of the text to be built. Will be determined by the engine as it works. */
     private int lineHeight;
 
-    /**
-     * The name of the font to be used by the engine.
-     */
+    /** The name of the font to be used by the engine. */
     private String fontName;
 
-    /**
-     * A container to store positioning information as well as information for write access via a cursor.
-     */
+    /** A container to store positioning information as well as information for write access via a cursor. */
     private TextStore textStore;
 
-    /**
-     * A coordinate position that indicates where the next textbox should be positioned.
-     */
+    /** A coordinate position that indicates where the next textbox should be positioned. */
     private Point nextPosition;
 
     public TextRenderEngine(int width, int height, int defaultFontSize, String defaultFontName) {
@@ -57,13 +43,11 @@ public class TextRenderEngine {
         nextPosition = new Point(LEFT_MARGIN, TOP_MARGIN);
     }
 
+    /** Cursor functionality has not yet been implemented, these are just here as a reminder for now. */
     public static Cursor defaultCursor() {
         return new Cursor(null, new Point(LEFT_MARGIN, TOP_MARGIN));
     }
 
-    /**
-     * Cursor functionality has not yet been implemented, these are just here as a reminder for now.
-     */
     public Cursor getCursor(double xPos, double yPos) {
         int line = calculateLineNumber(yPos);
         TextInfo ti = textStore.getTextAt(line, xPos);
@@ -90,16 +74,12 @@ public class TextRenderEngine {
         return textStore.getTextGroup();
     }
 
-    /**
-     * Calculates and returns the number of the line that a given Y-coordinate position corresponds to.
-     */
+    /** Calculates and returns the number of the line that a given Y-coordinate position corresponds to. */
     private int calculateLineNumber(double yPos) {
         return (int) (yPos / lineHeight);
     }
 
-    /**
-     * Constructs and positions a Text box containing TEXT.
-     */
+    /** Constructs and positions a Text box containing TEXT. */
     private Text buildTextBox(String text) {
         Text result = new Text(text);
         result.setTextOrigin(VPos.TOP);
@@ -139,17 +119,13 @@ public class TextRenderEngine {
         return nextPosition.getX() + getTextWidth(t) > groupWidth - RIGHT_MARGIN;
     }
 
-    /**
-     * Sets nextPosition to point at the start of the next line.
-     */
+    /** Sets nextPosition to point at the start of the next line. */
     private void setPositionToStartOfNextLine() {
         int newY = nextPosition.getY() + lineHeight;
         nextPosition = new Point(LEFT_MARGIN, newY);
     }
 
-    /**
-     * Sets nextPosition to point at the next space for a textBox on the current line.
-     */
+    /** Sets nextPosition to point at the next space for a textBox on the current line. */
     private void setToNextPosition(Text t) {
         t.setX(nextPosition.getX());
         t.setY(nextPosition.getY());
@@ -166,38 +142,32 @@ public class TextRenderEngine {
         return getTextHeight(heightTest);
     }
 
-    /**
-     * Returns the height of a textBox.
-     */
+    /** Returns the height of a textBox. */
     private int getTextHeight(Text t) {
         return (int) (t.getLayoutBounds().getHeight() + 1);
     }
 
-    /**
-     * Returns the width of a textbox.
-     */
+    /** Returns the width of a textbox. */
     private int getTextWidth(Text t) {
         return (int) (t.getLayoutBounds().getWidth() + 1);
     }
 
-    /**
-     * Set the width of the Group returned by the render engine's build method.
-     */
+    /** Set the width of the Group returned by the render engine's build method. */
     public void setGroupWidth(int newWidth) {
         groupWidth = newWidth;
     }
 
-    /**
-     * Set the height of the Group returned by the render engine's build method.
-     */
+    /** Set the height of the Group returned by the render engine's build method. */
     public void setGroupHeight(int newHeight) {
         groupHeight = newHeight;
     }
 
+    /** Return the font size that is being used for rendering. */
     public int getFontSize() {
         return fontSize;
     }
 
+    /** Change the font size to be used for rendering. */
     public void setFontSize(int newSize) {
         fontSize = newSize;
     }

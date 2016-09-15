@@ -15,39 +15,25 @@ import java.io.IOException;
 import java.util.List;
 
 public class Editor extends Application {
-    /**
-     * The default width of the window loaded by this application.
-     */
+    /** The default width of the window loaded by this application. */
     private static final int DEFAULT_WIDTH = 500;
 
-    /**
-     * The default height of the window loaded by this application.
-     */
+    /** The default height of the window loaded by this application. */
     private static final int DEFAULT_HEIGHT = 500;
 
-    /**
-     * The default font for the editor.
-     */
+    /** The default font for the editor. */
     private static final String DEFAULT_FONT_NAME = "Verdana";
 
-    /**
-     * The default size for the editor's text.
-     */
+    /** The default size for the editor's text. */
     private static final int DEFAULT_FONT_SIZE = 12;
 
-    /**
-     * A container to store the text on the screen.
-     */
+    /** A container to store the text on the screen. */
     private FastLinkedList<String> buffer;
 
-    /**
-     * A rendering engine to create a Group of Text nodes for each character.
-     */
+    /** rendering engine to create a Group of Text nodes for each character. */
     private TextRenderEngine renderer;
 
-    /**
-     * The name of the file.
-     */
+    /** The name of the file. */
     private String fileName;
 
     public static void main(String[] args) {
