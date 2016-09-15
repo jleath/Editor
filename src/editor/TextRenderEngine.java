@@ -12,27 +12,40 @@ public class TextRenderEngine {
     private static final int LEFT_MARGIN = 5;
     private static final int RIGHT_MARGIN = 5;
     private static final int TOP_MARGIN = 0;
-    private static final int BOTTOM_MARGIN = 0;
 
     /**
      * The maximum width of the text box built by the engine.
      */
     private int groupWidth;
+
     /**
      * The maximum height of the text box build by the engine.
      */
     private int groupHeight;
+
     /**
      * The font size of the text to be built.
      */
     private int fontSize;
-    /** The line height of the text to be built. Will be determined by the engine as it works. */
+
+    /**
+     * The line height of the text to be built. Will be determined by the engine as it works.
+     */
     private int lineHeight;
-    /** The name of the font to be used by the engine. */
+
+    /**
+     * The name of the font to be used by the engine.
+     */
     private String fontName;
-    /** A container to store positioning information as well as information for write access via a cursor. */
+
+    /**
+     * A container to store positioning information as well as information for write access via a cursor.
+     */
     private TextStore textStore;
-    /** A coordinate position that indicates where the next textbox should be positioned. */
+
+    /**
+     * A coordinate position that indicates where the next textbox should be positioned.
+     */
     private Point nextPosition;
 
     public TextRenderEngine(int width, int height, int defaultFontSize, String defaultFontName) {
@@ -44,29 +57,17 @@ public class TextRenderEngine {
         nextPosition = new Point(LEFT_MARGIN, TOP_MARGIN);
     }
 
-    public Cursor getCursor(int xPos, int yPos) {
-        // TODO
-        return null;
+    public static Cursor defaultCursor() {
+        return new Cursor(null, new Point(LEFT_MARGIN, TOP_MARGIN));
     }
 
-    public Cursor moveCursorDown() {
-        // TODO
-        return null;
-    }
-
-    public Cursor moveCursorUp() {
-        // TODO
-        return null;
-    }
-
-    public Cursor moveCursorLeft() {
-        // TODO
-        return null;
-    }
-
-    public Cursor moveCursorRight() {
-        // TODO
-        return null;
+    /**
+     * Cursor functionality has not yet been implemented, these are just here as a reminder for now.
+     */
+    public Cursor getCursor(double xPos, double yPos) {
+        int line = calculateLineNumber(yPos);
+        TextInfo ti = textStore.getTextAt(line, xPos);
+        return new Cursor(ti.getNodeInBuffer(), ti.getPosition());
     }
 
     /**
@@ -74,13 +75,17 @@ public class TextRenderEngine {
      * and returns a Group holding Text boxes.
      */
     public Group build(FastLinkedList<String> buffer) {
+        nextPosition = new Point(LEFT_MARGIN, TOP_MARGIN);
         textStore = new TextStore();
         lineHeight = getLineHeight();
         for (int i = 0; i < buffer.size(); ++i) {
-            String textFromBuffer = buffer.getValueFromNode(i);
+            FastLinkedList.Node node = buffer.getNodeAt(i);
+            String textFromBuffer = (String) node.getValue();
             Text toInsert = buildTextBox(textFromBuffer);
             int lineNumber = calculateLineNumber(toInsert.getY());
-            textStore.addToLine(lineNumber, new TextInfo(toInsert, buffer.getNodeAt(i)));
+            TextInfo newInfo = new TextInfo(toInsert, node);
+            node.setPosition(newInfo.getPosition());
+            textStore.addToLine(lineNumber, newInfo);
         }
         return textStore.getTextGroup();
     }
@@ -178,14 +183,14 @@ public class TextRenderEngine {
     /**
      * Set the width of the Group returned by the render engine's build method.
      */
-    public void setgroupWidth(int newWidth) {
+    public void setGroupWidth(int newWidth) {
         groupWidth = newWidth;
     }
 
     /**
      * Set the height of the Group returned by the render engine's build method.
      */
-    public void setgroupHeight(int newHeight) {
+    public void setGroupHeight(int newHeight) {
         groupHeight = newHeight;
     }
 

@@ -22,6 +22,10 @@ public class TextInfo {
         return text;
     }
 
+    public Point getPosition() {
+        return new Point((int) text.getX(), (int) text.getY());
+    }
+
     public String toString() {
         return text.getText() + " @ " + text.getX() + ", " + text.getY();
     }

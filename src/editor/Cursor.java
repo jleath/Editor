@@ -1,30 +1,26 @@
 package editor;
 
 /**
- * Created by jaleath on 9/6/16.
+ * Not yet fully implemented.
  */
 public class Cursor {
-    private int position;
-    private int line;
+    private FastLinkedList.Node node;
+    private Point position;
 
-    public Cursor(int l, int pos) {
-        if (l > 0) {
-            line = l;
-        } else {
-            line = 0;
-        }
-        if (pos > 0) {
-            position = pos;
-        } else {
-            position = 0;
-        }
+    public Cursor(FastLinkedList.Node n, Point p) {
+        node = n;
+        position = p;
     }
 
-    public int getPosition() {
-        return position;
+    public int getX() {
+        return position.getX();
     }
 
-    public int getLine() {
-        return line;
+    public int getY() {
+        return position.getY();
+    }
+
+    public FastLinkedList.Node getNode() {
+        return node;
     }
 }

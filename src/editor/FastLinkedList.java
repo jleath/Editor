@@ -1,7 +1,7 @@
 package editor;
 
 /**
- * A custom linked list that keeps a reference to one of its own nodes for quick insertion and removal.
+ * A custom circular linked list that keeps a reference to one of its own nodes for quick insertion and removal.
  */
 public class FastLinkedList<T> {
     /**
@@ -9,7 +9,15 @@ public class FastLinkedList<T> {
      * Deletions will delete this node and move this to the previous node.
      */
     private Node insertionPoint;
+
+    /**
+     * The number of items in the linkedList.
+     */
     private int size;
+
+    /**
+     * The root element of the linked list.
+     */
     private Node sentinel;
 
     public FastLinkedList() {
@@ -76,6 +84,10 @@ public class FastLinkedList<T> {
         return result;
     }
 
+    public Node getInsertionPoint() {
+        return insertionPoint;
+    }
+
     public void setInsertionPoint(Node n) {
         insertionPoint = n;
     }
@@ -94,12 +106,13 @@ public class FastLinkedList<T> {
     }
 
     /**
-     * An inner class for linked list nodes.
+     * A node in a FastLinkedList
      */
     public class Node {
         T value;
         Node next;
         Node prev;
+        Point position;
 
         Node(T val, Node n, Node p) {
             value = val;
@@ -107,8 +120,17 @@ public class FastLinkedList<T> {
             prev = p;
         }
 
+        public Point getPosition() {
+            return position;
+        }
+
+        public void setPosition(Point p) {
+            position = p;
+        }
+
         public T getValue() {
             return value;
         }
     }
+
 }

@@ -17,10 +17,6 @@ public class TextStore {
         addNewLine();
     }
 
-    public int numLines() {
-        return lines.size();
-    }
-
     public void addToLine(int lineNumber, TextInfo text) {
         if (lines.size() < lineNumber) {
             throw new RuntimeException("Attempted to insert on a line that can't exist");
@@ -33,11 +29,6 @@ public class TextStore {
 
     public void addNewLine() {
         lines.add(new Line());
-    }
-
-    public TextInfo removeFromLine(int lineNumber) {
-        Line lineToRemoveFrom = lines.get(lineNumber);
-        return lineToRemoveFrom.deleteFromEnd();
     }
 
     /**
@@ -58,6 +49,10 @@ public class TextStore {
         return result;
     }
 
+
+    /**
+     * Push the items in toPush into the textStore from back to front.
+     */
     private void pushInReverse(FastLinkedList<TextInfo> toPush) {
         Line lastLine = getLastLine();
         while (!toPush.isEmpty()) {
@@ -85,6 +80,38 @@ public class TextStore {
         return lastLine.getFromEnd();
     }
 
+    /**
+     * Returns the node associated with the x coordinate on a given line.
+     * If the lineNumber is greater than the number of lines in the textstore, will return the last
+     * node on the last line.
+     * If the x coordinate is < 0, will return the last node in the previous line.
+     * If the x coordinate is > the total width of the line, will return the last node in the line.
+     * Else, will return the first node in the line that has an x coordinate less than xPos.
+     */
+    public TextInfo getTextAt(int lineNumber, double xPos) {
+        if (lineNumber > lines.size()) {
+            return peekAtEnd();
+        }
+        if (lineNumber < 0) {
+            return getTextAt(0, 0);
+        }
+        Line line = lines.get(lineNumber);
+        if (xPos < 0) {
+            if (lineNumber == 0) {
+                return getTextAt(0, 0);
+            } else {
+                return lines.get(lineNumber - 1).getFromEnd();
+            }
+        }
+        for (int i = 0; i < line.size(); ++i) {
+            TextInfo curr = line.get(i);
+            if (curr.getPosition().getX() < xPos) {
+                return curr;
+            }
+        }
+        return line.getFromEnd();
+    }
+
     private Line getLastLine() {
         return lines.get(lines.size() - 1);
     }
@@ -100,10 +127,6 @@ public class TextStore {
             }
         }
         return result;
-    }
-
-    public int getNumCharactersInLine(int lineNum) {
-        return lines.get(lineNum).size();
     }
 
     /**
@@ -136,16 +159,12 @@ public class TextStore {
             return characters.getNodeAt(i).getValue().getTextBox();
         }
 
-        private String getStringAt(int i) {
-            return getText(i).getText();
-        }
-
-        private String getLastString() {
-            return getStringAt(size() - 1);
-        }
-
         private boolean isEmpty() {
             return size() == 0;
+        }
+
+        private TextInfo get(int i) {
+            return characters.getValueFromNode(i);
         }
     }
 }
