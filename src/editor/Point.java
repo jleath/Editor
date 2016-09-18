@@ -14,6 +14,10 @@ public class Point {
         yPos = y;
     }
 
+    public Point(Point p) {
+        this(p.getX(), p.getY());
+    }
+
     public int getX() {
         return xPos;
     }
