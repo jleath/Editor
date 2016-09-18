@@ -43,17 +43,6 @@ public class TextRenderEngine {
         nextPosition = new Point(LEFT_MARGIN, TOP_MARGIN);
     }
 
-    /** Cursor functionality has not yet been implemented, these are just here as a reminder for now. */
-    public static Cursor defaultCursor() {
-        return new Cursor(null, new Point(LEFT_MARGIN, TOP_MARGIN));
-    }
-
-    public Cursor getCursor(double xPos, double yPos) {
-        int line = calculateLineNumber(yPos);
-        TextInfo ti = textStore.getTextAt(line, xPos);
-        return new Cursor(ti.getNodeInBuffer(), ti.getPosition());
-    }
-
     /**
      * Processes each String in BUFFER, positions it, adds it into the textStore for write access
      * and returns a Group holding Text boxes.
